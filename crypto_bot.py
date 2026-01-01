@@ -260,9 +260,20 @@ async def run_polling():
     # Garde le bot actif
     await asyncio.Event().wait()
 
+def start_bot():
+    """Démarre le bot - version compatible avec Render"""
+    application = setup_application()
+    
+    logger.info("🛡️ Crypto Sentinel - Bot démarré!")
+    print("✅ Bot Telegram en ligne sur Render!")
+    
+    # Mode polling simple
+    application.run_polling()
+
 def main():
-    """Point d'entrée principal pour app.py"""
-    asyncio.run(run_polling())
+    """Point d'entrée principal pour compatibilité"""
+    start_bot()
 
 if __name__ == '__main__':
     main()
+
