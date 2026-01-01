@@ -34,6 +34,9 @@ CRYPTO_MAPPING = {
     'dogecoin': 'dogecoin', 'doge': 'dogecoin',
     'cardano': 'cardano', 'ada': 'cardano',
     'ripple': 'ripple', 'xrp': 'ripple',
+    'bnb': 'binancecoin',
+    'matic': 'matic-network',
+    'avax': 'avalanche-2',
 }
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -229,8 +232,9 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     """Gère les erreurs"""
     logger.error(f"Erreur: {context.error}")
 
-def main():
-    """Fonction principale pour démarrer le bot"""
+# ==================== FONCTIONS POUR RENDER ====================
+def setup_application():
+    """Configure et retourne l'application Telegram"""
     application = Application.builder().token(TELEGRAM_TOKEN).build()
     
     application.add_handler(CommandHandler("start", start))
@@ -240,11 +244,26 @@ def main():
     
     application.add_error_handler(error_handler)
     
-    logger.info("🛡️ Crypto Sentinel - Bot démarré !")
-    print("✅ Bot en ligne! Utilisez /start pour commencer.")
-    print("🔴 Appuyez sur Ctrl+C pour arrêter.")
+    return application
+
+async def run_polling():
+    """Lance le bot en mode polling (pour Render)"""
+    application = setup_application()
     
-    application.run_polling()
+    logger.info("🛡️ Crypto Sentinel - Bot démarré en mode Polling!")
+    print("✅ Bot Telegram en ligne sur Render!")
+    print("📱 Utilisez /start sur Telegram")
+    
+    await application.initialize()
+    await application.start()
+    await application.updater.start_polling()
+    
+    # Garde le bot actif
+    await asyncio.Event().wait()
+
+def main():
+    """Point d'entrée principal"""
+    asyncio.run(run_polling())
 
 if __name__ == '__main__':
     main()
