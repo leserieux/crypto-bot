@@ -247,12 +247,11 @@ def setup_application():
     return application
 
 async def run_polling():
-    """Lance le bot en mode polling (pour Render)"""
+    """Lance le bot en mode polling (version compatible avec app.py)"""
     application = setup_application()
     
     logger.info("🛡️ Crypto Sentinel - Bot démarré en mode Polling!")
-    print("✅ Bot Telegram en ligne sur Render!")
-    print("📱 Utilisez /start sur Telegram")
+    print("✅ Bot Telegram en ligne!")
     
     await application.initialize()
     await application.start()
@@ -262,7 +261,7 @@ async def run_polling():
     await asyncio.Event().wait()
 
 def main():
-    """Point d'entrée principal"""
+    """Point d'entrée principal pour app.py"""
     asyncio.run(run_polling())
 
 if __name__ == '__main__':
